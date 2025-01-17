@@ -182,6 +182,18 @@ class Song:
 		os.makedirs(f"./{os.getenv(self.__target_codec.upper() + '_LIBRARY_DIR')}/", exist_ok=True)
 		os.replace(f"./{CONVERTED_CACHE}{self.song_cid}.{self.__target_codec}", f"./{os.getenv(self.__target_codec.upper() + '_LIBRARY_DIR')}/{self.song_cid}.{self.__target_codec}")
 
+	def full_convert(self) -> bool:
+		if not self.is_cached():
+			return False
+		self.convert()
+		getattr(self, f"add_metadata_{self.__target_codec}")()
+		os.makedirs(f"./{os.getenv(self.__target_codec.upper() + '_LIBRARY_DIR')}/", exist_ok=True)
+		os.replace(f"./{CONVERTED_CACHE}{self.song_cid}.{self.__target_codec}", f"./{os.getenv(self.__target_codec.upper() + '_LIBRARY_DIR')}/{self.song_cid}.{self.__target_codec}")
+		return True
+
+	def is_cached(self) -> bool:
+		return os.path.exists(f"{AUDIO_CACHE}{self.song_cid}{self.__audio_codec}")
+
 	def __get_song_position(self) -> int:
 		for i, song in enumerate(self.album_songs):
 			if song.get("cid") == self.song_cid:
