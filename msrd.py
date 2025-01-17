@@ -21,10 +21,8 @@ def download_audio(cid: str, codec: typing.Literal['flac', 'm4a', 'mp3'] = "flac
 
 def convert_audio(cid: str, codec: typing.Literal['flac', 'm4a', 'mp3'] = "flac", allow_download: bool = False) -> None:
 	s = Song(cid, target_codec=codec)
-	if allow_download and not s.is_cached():
+	if not s.full_convert() and allow_download:
 		s.full_download()
-	else:
-		s.full_convert()
 
 @cli.command(help="Download music", no_args_is_help=True)
 def download(
