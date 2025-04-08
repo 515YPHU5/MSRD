@@ -4,6 +4,10 @@
 - Python (3.10.6 tested, other versions probably work just as fine)
 - [FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases), installed and in system PATH
 
+You can easily install these requirements using [Scoop](https://scoop.sh/)
+`scoop install 7z git`
+`scoop install ffmpeg uv python`
+
 If you have already installed Python and FFmpeg skip to the [setup](#set-up)
 ### Install Python
 
