@@ -4,6 +4,8 @@
 - Python (3.10.6 tested, other versions probably work just as fine)
 - [FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases), installed and in system PATH
 
+You can grab the requirements directly or, alternatively, through [scoop](https://scoop.sh/)/winget, which is preinstalled on windows 10 (1809 or later). If you choose to use scoop, follow [this guide](./docs/scoop.md).
+
 If you have already installed Python and FFmpeg skip to the [setup](#set-up)
 ### Install Python
 
