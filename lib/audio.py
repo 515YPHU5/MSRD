@@ -1,6 +1,9 @@
 import os
 import requests
 import typing
+import ytmusicapi # type: ignore
+from datetime import datetime as dt
+# from ffmpeg.ffmpeg import FFmpeg # type: ignore
 from ffmpeg_progress_yield import FfmpegProgress
 from mutagen.flac import FLAC, Picture
 from mutagen.id3 import ID3
@@ -10,6 +13,7 @@ from mutagen.mp4 import MP4, MP4Cover # type: ignore
 from mutagen.easyid3 import EasyID3
 import tqdm
 import colorama
+YTM:ytmusicapi.YTMusic = ytmusicapi.YTMusic()
 
 AUDIO_CACHE = "data/cache/audio/"
 COVER_CACHE = "data/cache/cover/"
@@ -51,7 +55,7 @@ class Song:
 		self.song_position: int = self.__get_song_position()
 
 		# === YTM DATA ===
-		self.song_year: int = self.__get_song_year() if year_check else -1
+		self.song_year: int = self.__yt_get_song_year() if year_check else -1
 		# self.album_artists: int = self.__yt_get_album_artists() if year_check else -1
 		
 		# === CODECS ===
@@ -196,9 +200,12 @@ class Song:
 				return i+1
 		return -1
 
-	def __get_song_year(self) -> int:
-		assert self.song_url
-		return int(self.song_url.split("siren/audio/")[1].split("/")[0][0:4])
+	def __yt_get_song_year(self) -> int:
+		search_res:list[dict[str, typing.Any]] = YTM.search(f"{self.song_title} - {self.song_artists[0] if len(self.song_artists)>0 else '塞壬唱片-MSR'}", limit=1, filter="songs") # type: ignore
+		try:
+			return dt.fromisoformat(YTM.get_song(search_res[0].get("videoId"))["microformat"]["microformatDataRenderer"]["uploadDate"]).year # type: ignore
+		except:
+			return -1
 
 	# def __yt_get_album_artists(self) -> None:
 	# 	return
